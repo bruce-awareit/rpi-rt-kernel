@@ -1,9 +1,8 @@
-#!/bin/sh
+#!/usr/bin/bash
 
-RASPIOS=$(ls *.img -1 | sed -e 's/\.img$//')
-
-mount -t ext4 -o loop,offset=$((532480*512)) ${RASPIOS}.img /raspios/mnt/disk
-mount -t vfat -o loop,offset=$((8192*512)),sizelimit=$((524288*512)) ${RASPIOS}.img /raspios/mnt/boot
+cd /raspios
+mount -t ext4 -o loop,offset=$((532480*512)) 2022-04-04-raspios-bullseye-arm64-lite.img /raspios/mnt/disk
+mount -t vfat -o loop,offset=$((8192*512)),sizelimit=$((524288*512)) 2022-04-04-raspios-bullseye-arm64-lite.img /raspios/mnt/boot
 
 cd /rpi-kernel/linux/
 make INSTALL_MOD_PATH=/raspios/mnt/disk modules_install
@@ -21,5 +20,4 @@ touch /raspios/mnt/boot/ssh
 umount /raspios/mnt/disk
 umount /raspios/mnt/boot
 
-mkdir build
-zip build/${RASPIOS}.zip ${RASPIOS}.img
+zip 2022-04-04-raspios-bullseye-arm64-lite-RT.img.zip 2022-04-04-raspios-bullseye-arm64-lite.img
